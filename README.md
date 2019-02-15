@@ -229,12 +229,36 @@ http backend.public-education.com:8080/dashboards
 [TIP] to watch the kafka events, you can use these scripts:
 ```
 (new shell)
-cd ~/Downloads/kafka_2.12-2.1.0
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic class.topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+$ cd ~/Downloads/kafka_2.12-2.1.0
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic class.topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+3	{"classId":"2","courseTitle":"SW 300","customerId":"3","customerName":"장 진영","hour":0,"price":50.0}
+3	{"classId":"2","courseTitle":"SW 300","customerId":"3","customerName":"장 진영","hour":0,"price":50.0}
+3	{"classId":"2","courseTitle":"SW 300","customerId":"3","customerName":"장 진영","hour":0,"price":50.0}
+3	{"classId":"2","courseTitle":"SW 300","customerId":"3","customerName":"장 진영","hour":0,"price":50.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":0.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":0.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":500.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":500.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":500.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":500.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":500.0}
+7	{"classId":"6","courseTitle":"BPM and MSA Course","customerId":"7","customerName":"Rick Jang","hour":0,"price":500.0}
+...
 
 (new shell)
-cd ~/Downloads/kafka_2.12-2.1.0
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic enrollment-total-output --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+$ cd ~/Downloads/kafka_2.12-2.1.0
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic enrollment-total-output --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+3	{"count":10,"totalPrice":500,"totalTime":0}
+3	{"count":13,"totalPrice":650,"totalTime":0}
+7	{"count":1,"totalPrice":0,"totalTime":0}
+7	{"count":2,"totalPrice":0,"totalTime":0}
+7	{"count":4,"totalPrice":1000,"totalTime":0}
+7	{"count":5,"totalPrice":1500,"totalTime":0}
+7	{"count":6,"totalPrice":2000,"totalTime":0}
+7	{"count":12,"totalPrice":5000,"totalTime":0}
+....
 
 ```
 
