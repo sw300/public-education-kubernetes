@@ -92,6 +92,10 @@ http://localhost:8081 or 8082
 
 create a new course and class:
 
+![image](https://user-images.githubusercontent.com/487999/52828067-9f168d00-310a-11e9-9f52-384da15203f3.png)
+![image](https://user-images.githubusercontent.com/487999/52828095-c8371d80-310a-11e9-95bc-36700d9006e8.png)
+![image](https://user-images.githubusercontent.com/487999/52828137-f4529e80-310a-11e9-9e61-002db9637f6f.png)
+![image](https://user-images.githubusercontent.com/487999/52828159-046a7e00-310b-11e9-9c3c-41e7604ec1b9.png)
 
 
 ## Building and Running on Kubernetes Manually
