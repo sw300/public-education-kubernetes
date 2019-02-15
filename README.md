@@ -90,13 +90,124 @@ you can now access to the frontend:
 http://localhost:8081 or 8082
 ```
 
-create a new course and class:
+create a new course and class with Admin UI:
 
-![image](https://user-images.githubusercontent.com/487999/52828067-9f168d00-310a-11e9-9f52-384da15203f3.png)
 ![image](https://user-images.githubusercontent.com/487999/52828095-c8371d80-310a-11e9-95bc-36700d9006e8.png)
 ![image](https://user-images.githubusercontent.com/487999/52828137-f4529e80-310a-11e9-9e61-002db9637f6f.png)
 ![image](https://user-images.githubusercontent.com/487999/52828159-046a7e00-310b-11e9-9c3c-41e7604ec1b9.png)
 
+
+create a customer and enroll in the class with API:
+```json
+$ http backend.public-education.com:8080/clazzes
+HTTP/1.1 200 
+Content-Type: application/hal+json;charset=UTF-8
+Date: Fri, 15 Feb 2019 01:21:32 GMT
+Transfer-Encoding: chunked
+X-Application-Context: application:8080
+
+{
+    "_embedded": {
+        "clazzes": [
+            {
+                "_links": {
+                    "clazz": {
+                        "href": "http://localhost:8086/clazzes/6"
+                    }, 
+                    "clazzDayList": {
+                        "href": "http://localhost:8086/clazzes/6/clazzDayList"
+                    }, 
+                    "course": {
+                        "href": "http://localhost:8086/clazzes/6/course"
+                    }, 
+                    "self": {
+                        "href": "http://localhost:8086/clazzes/6"        <--- note this uri for clazz
+                    }
+                }, 
+                "evaluationRate": 0.0, 
+                "price": 0.0, 
+                "status": "CREATED"
+            }
+        ]
+    }, 
+    "_links": {
+        "profile": {
+            "href": "http://localhost:8086/profile/clazzes"
+        }, 
+        "self": {
+            "href": "http://localhost:8086/clazzes{?page,size,sort}", 
+            "templated": true
+        }
+    }, 
+    "page": {
+        "number": 0, 
+        "size": 20, 
+        "totalElements": 1, 
+        "totalPages": 1
+    }
+}
+
+$ http backend.public-education.com:8080/customers firstName="Rick" lastName="Jang"
+HTTP/1.1 201 
+Content-Type: application/json;charset=UTF-8
+Date: Fri, 15 Feb 2019 01:21:59 GMT
+Location: http://localhost:8086/customers/7
+Transfer-Encoding: chunked
+X-Application-Context: application:8080
+
+{
+    "_links": {
+        "customer": {
+            "href": "http://localhost:8086/customers/7"
+        }, 
+        "paymentMethod": {
+            "href": "http://localhost:8086/customers/7/paymentMethod"
+        }, 
+        "self": {
+            "href": "http://localhost:8086/customers/7"                 <--- note this uri for customer
+        }
+    }, 
+    "email": null, 
+    "firstName": "Rick", 
+    "industry": null, 
+    "job": null, 
+    "lastName": "Jang", 
+    "membership": false, 
+    "phone": null
+}
+
+$ http backend.public-education.com:8080/enrollments customer="http://localhost:8086/customers/7" clazz="http://localhost:8086/clazzes/6"
+HTTP/1.1 201 
+Content-Type: application/json;charset=UTF-8
+Date: Fri, 15 Feb 2019 01:23:07 GMT
+Location: http://localhost:8086/enrollments/8
+Transfer-Encoding: chunked
+X-Application-Context: application:8080
+
+{
+    "_links": {
+        "clazz": {
+            "href": "http://localhost:8086/enrollments/8/clazz"
+        }, 
+        "customer": {
+            "href": "http://localhost:8086/enrollments/8/customer"
+        }, 
+        "enrollment": {
+            "href": "http://localhost:8086/enrollments/8"
+        }, 
+        "payments": {
+            "href": "http://localhost:8086/enrollments/8/payments"
+        }, 
+        "self": {
+            "href": "http://localhost:8086/enrollments/8"
+        }
+    }, 
+    "date": null, 
+    "grade": 0, 
+    "status": null
+}
+
+```
 
 ## Building and Running on Kubernetes Manually
 ```
