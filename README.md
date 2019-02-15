@@ -147,6 +147,11 @@ X-Application-Context: application:8080
     }
 }
 
+
+$ http PATCH backend.public-education.com:8080/clazzes/6 price=500  # set the price
+HTTP/1.1 200 OK
+...
+
 $ http backend.public-education.com:8080/customers firstName="Rick" lastName="Jang"
 HTTP/1.1 201 
 Content-Type: application/json;charset=UTF-8
@@ -208,6 +213,31 @@ X-Application-Context: application:8080
 }
 
 ```
+
+You may check the logs are out at the public-education-marketing service:
+```
+<이메일 발송>
+제목: Rick Jang 님의 강의 수강이 신청되었습니다.
+수강신청과목명: BPM and MSA Course
+
+```
+Also you can find the dashboard service has updated the total enrollment time and price for each customers:
+```
+http backend.public-education.com:8080/dashboards
+```
+
+[TIP] to watch the kafka events, you can use these scripts:
+```
+(new shell)
+cd ~/Downloads/kafka_2.12-2.1.0
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic class.topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+(new shell)
+cd ~/Downloads/kafka_2.12-2.1.0
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic enrollment-total-output --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+```
+
 
 ## Building and Running on Kubernetes Manually
 ```
