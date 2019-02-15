@@ -21,10 +21,13 @@ spec:
               - name: IMAGE
                 value: docker.io/jinyoung/public-education-marketing:latest
       revisionTemplate:
+        metadata:
+          annotations:
+            autoscaling.knative.dev/minScale: "1"
         spec:
           container:
             image: docker.io/jinyoung/public-education-marketing:latest
             imagePullPolicy: Always
             env:
-              - name: SIMPLE_MSG
-                value: "Hello from the sample app! v3"
+              - name: VERSION
+                value: "v5"
