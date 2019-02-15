@@ -264,11 +264,22 @@ $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic enroll
 
 
 ## Building and Running on Kubernetes Manually
+
+- prerequites:  
+
+Kafka installation with helm
+```
+helm install --name education-kafka incubator/kafka
+```
+
+- building, containerizing and run on kubernetes
 ```
 cd public-education-core
 docker build -t [YOUR_DOCKER_REGISTRY]/[PROJECT]/[ARTIFACT_ID]:[VERSION] .
 
 kuberctl run public-education-core --image=[YOUR_DOCKER_REGISTRY]/[PROJECT]/[ARTIFACT_ID]:[VERSION]
+
+(do this for each microservices as well)
 ```
 
 ## Multi-yaml version
@@ -303,28 +314,26 @@ once the directory created, you can deploy all the deployments and the dependenc
 helm install public-education .
 ```
 
-## KNative version
+## Zero-down time deploy and AutoScale with KNative
 
-- prerequites:  
-
-Kafka installation with helm
-```
-helm install --name education-kafka incubator/kafka
-```
 
 KNative installation: 
 see the instructions in the "Serverless and FaaS" section of https://workflowy.com/s/msa/27a0ioMCzlpV04Ib 
 
-
-- build, deploy for core subdomain
+- clone the repo first
 ```
-kubectl create -f ksvc-core.yaml
-kubectl create -f ksvc-marketing.yaml
-kubectl create -f ksvc-dashboard.yaml
-kubectl create -f job-dashboard-aggregator.yaml
+git clone https://github.com/sw300/public-education-kubernetes
+cd public-education-kubernetes
 ```
 
-- if everything goes well, you can check as follows:
+- build and deploy applications
+```
+kubectl apply -f ksvc-core.yaml
+kubectl apply -f ksvc-marketing.yaml
+kubectl apply -f ksvc-dashboard.yaml
+```
+
+- if everything goes fine, pods look like this:
 ```
 $ kubectl get po
 NAME                                     READY     STATUS     RESTARTS   AGE
@@ -339,4 +348,75 @@ public-education-marketing-00001-555r2   0/1       Init:2/3   0          1m
 
 ```
 
-- wait for seconds
+- change the source code:
+```java
+
+(from v1)
+
+@RepositoryRestResource(collectionResourceRel = "v1/mailLogs", path = "v1/mailLogs")
+public interface MailLogRepository extends PagingAndSortingRepository<MailLog, Long>{
+
+}
+
+(to v2)
+
+@RepositoryRestResource(collectionResourceRel = "v2/mailLogs", path = "v2/mailLogs")
+public interface MailLogRepository extends PagingAndSortingRepository<MailLog, Long>{
+
+}
+
+```
+
+- commit and push 
+```
+git commit
+git push
+```
+
+- build and deploy again:  change the ksvc-marketing.yaml
+```
+nano kvsc-marketing.yaml
+v1
+(to)
+v2
+(save)
+
+kubectl apply -f ksvc-marketing.yaml   # will trigger build and deploy for version 2
+```
+
+- see the detail build logs:
+```
+kubectl logs  public-education-marketing-00001-555r2 -c build-step-build-and-push
+```
+
+- wait while watching the version:
+```
+$ run.sh
+
+{
+  "_links" : {
+    "v1/mailLogs" : {
+      "href" : "http://public-education-marketing.default.svc.cluster.local/v1/mailLogs{?page,size,sort}",
+      "templated" : true
+    },
+    "profile" : {
+      "href" : "http://public-education-marketing.default.svc.cluster.local/profile"
+    }
+  }
+}
+.... after deployment is done, the version has been changed to v2 WITHOUT DOWN-TIME! ....
+
+{
+  "_links" : {
+    "v2/mailLogs" : {
+      "href" : "http://public-education-marketing.default.svc.cluster.local/v2/mailLogs{?page,size,sort}",
+      "templated" : true
+    },
+    "profile" : {
+      "href" : "http://public-education-marketing.default.svc.cluster.local/profile"
+    }
+  }
+}
+```
+
+- 
