@@ -99,12 +99,12 @@ create a new course and class with Admin UI:
 
 create a customer and enroll in the class with API:
 ```json
-$ http backend.public-education.com:8080/clazzes
+$ http backend.public-education.com:8086/clazzes
 HTTP/1.1 200 
 Content-Type: application/hal+json;charset=UTF-8
 Date: Fri, 15 Feb 2019 01:21:32 GMT
 Transfer-Encoding: chunked
-X-Application-Context: application:8080
+X-Application-Context: application:8086
 
 {
     "_embedded": {
@@ -148,11 +148,11 @@ X-Application-Context: application:8080
 }
 
 
-$ http PATCH backend.public-education.com:8080/clazzes/6 price=500  # set the price
+$ http PATCH backend.public-education.com:8086/clazzes/6 price=500  # set the price
 HTTP/1.1 200 OK
 ...
 
-$ http backend.public-education.com:8080/customers firstName="Rick" lastName="Jang"
+$ http backend.public-education.com:8086/customers firstName="Rick" lastName="Jang"
 HTTP/1.1 201 
 Content-Type: application/json;charset=UTF-8
 Date: Fri, 15 Feb 2019 01:21:59 GMT
@@ -181,7 +181,7 @@ X-Application-Context: application:8080
     "phone": null
 }
 
-$ http backend.public-education.com:8080/enrollments customer="http://localhost:8086/customers/7" clazz="http://localhost:8086/clazzes/6"
+$ http backend.public-education.com:8086/enrollments customer="http://localhost:8086/customers/7" clazz="http://localhost:8086/clazzes/6"
 HTTP/1.1 201 
 Content-Type: application/json;charset=UTF-8
 Date: Fri, 15 Feb 2019 01:23:07 GMT
