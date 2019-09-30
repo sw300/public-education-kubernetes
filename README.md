@@ -97,8 +97,11 @@ create a new course and class with Admin UI:
 ![image](https://user-images.githubusercontent.com/487999/52828159-046a7e00-310b-11e9-9c3c-41e7604ec1b9.png)
 
 
-create a customer and enroll in the class with API:
+you can either create a course, customer and enroll in the class with API:
 ```json
+
+$ http backend.public-education.com:8086/courses title="SOA 과정"
+
 $ http backend.public-education.com:8086/clazzes
 HTTP/1.1 200 
 Content-Type: application/hal+json;charset=UTF-8
