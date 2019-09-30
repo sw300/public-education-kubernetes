@@ -279,6 +279,7 @@ helm install --name education-kafka incubator/kafka
 ```
 cd public-education-core
 docker build -t [YOUR_DOCKER_REGISTRY]/[PROJECT]/[ARTIFACT_ID]:[VERSION] .
+# example:  docker build -t gcr.io/public-education-uengine/public-education-core:v1 .
 
 kuberctl run public-education-core --image=[YOUR_DOCKER_REGISTRY]/[PROJECT]/[ARTIFACT_ID]:[VERSION]
 
